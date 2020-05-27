@@ -58,6 +58,9 @@ public class Converter {
 			FileInputStream fis = new FileInputStream(file);
 
 			long len = file.length();
+			if (len <= 0) {
+				return null;
+			}
 			int readLen = len > MAX_LENGTH ? MAX_LENGTH : (int) len;
 
 			int n = 0;
@@ -91,14 +94,21 @@ public class Converter {
 			}
 
 			if (!srcFile.exists()) {
-				System.out.println("error!!!!!!");
+				System.out.println("File is not exists!");
 				return;
 			}
 			if (!srcFile.getName().endsWith(TXT_EXT)) {
+				System.out.println("Not a txt file!");
 				return;
 			}
-			String charset = getCharset(srcFile);
+			long len = srcFile.length();
+			if (len <= 0) {
+				System.out.println("Skip empty file: " + srcFile.getName());
+				return;
+			}
 			fis = new FileInputStream(srcFile);
+
+			String charset = getCharset(srcFile);
 
 			String mdName = mdName(srcFile);
 			if (mdName == null) {
@@ -118,9 +128,7 @@ public class Converter {
 			}
 			writer = new FileWriter(mdFile);
 
-			long len = srcFile.length();
 			int readLen = len > MAX_LENGTH ? MAX_LENGTH : (int) len;
-
 			int n = 0;
 			while (n != -1) {
 				byte[] bytes = new byte[readLen];
@@ -158,6 +166,7 @@ public class Converter {
 
 	public void handleFolder(File folder) {
 		if (folder == null) {
+			System.out.println("Folder is null!");
 			return;
 		}
 		if (!folder.isDirectory()) {
