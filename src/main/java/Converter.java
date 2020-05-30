@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import java.io.File;
@@ -21,14 +24,14 @@ public class Converter {
 		}
 	}
 
-	public static final Map<Integer, Conver> convs = new HashMap<>();
+	public static final List<Conver> convers = new ArrayList<>();
 	static {
-		convs.put(1, new Conver("\r\n\r\n\r\n\r\n\r\n", "@@@"));
-		convs.put(2, new Conver("\r\n\r\n\r\n\r\n", "@@@"));
-		convs.put(3, new Conver("\r\n\r\n\r\n", "@@@"));
-		convs.put(4, new Conver("\r\n\r\n", "@@@"));
-		convs.put(5, new Conver("\r\n", "\r\n\r\n"));
-		convs.put(6, new Conver("@@@", "\r\n\r\n"));
+		convers.add(new Conver("\r\n\r\n\r\n\r\n\r\n", "@@@"));
+		convers.add(new Conver("\r\n\r\n\r\n\r\n", "@@@"));
+		convers.add(new Conver("\r\n\r\n\r\n", "@@@"));
+		convers.add(new Conver("\r\n\r\n", "@@@"));
+		convers.add(new Conver("\r\n", ""));
+		convers.add(new Conver("@@@", "\r\n\r\n"));
 	}
 
 	public static final int MAX_LENGTH = Short.MAX_VALUE * 2;
@@ -37,8 +40,7 @@ public class Converter {
 		if (content == null || content.isEmpty()) {
 			return "";
 		}
-		for (Map.Entry<Integer, Conver> entry : convs.entrySet()) {
-			Conver conver = entry.getValue();
+		for (Conver conver : convers) {
 			content = content.replaceAll(conver.from, conver.to);
 		}
 		return content;
